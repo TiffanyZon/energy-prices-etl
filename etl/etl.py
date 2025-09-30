@@ -17,8 +17,24 @@ def format_time(time_str):
     return dt.strftime("%Y-%m-%d %H:%M")
 
 
+def max_price(data):
+    return max(record["SEK_per_kWh"] for record in data)
+
+
+def min_price(data):
+    return min(record["SEK_per_kWh"] for record in data)
+
+
+def mean_price(data):
+    prices = [record["SEK_per_kWh"] for record in data]
+    return float(sum(prices) / len(prices))
+
+
 data = extract_data(url)
-for record in data:
-    start = format_time(record["time_start"])
-    end = format_time(record["time_end"])
-    print(f"From {start} to {end}, price: {record['SEK_per_kWh']} SEK/kWh")
+max_price_value = max_price(data)
+min_price_value = min_price(data)
+mean_price_value = mean_price(data)
+print(f"Day: {today} \nMax price: {max_price_value:.4f} SEK/kWh")
+print(f"Min price: {min_price_value:.4f} SEK/kWh")
+
+print(f"Mean price: {mean_price_value:.4f} SEK/kWh")
